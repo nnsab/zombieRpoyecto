@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "Rectangle_shape_base.h"
 
 class Bullet
 {
@@ -15,9 +15,7 @@ public:
   void Set_shape_rotation(float angle);
 
 private:
-  sf::RectangleShape m_shape;
-  sf::Vector2f m_shape_size;
-  sf::Color m_shape_color;
+  Rectangle_shape_base m_shape;
 
   sf::Vector2f m_current_velocity;
   float m_max_speed;

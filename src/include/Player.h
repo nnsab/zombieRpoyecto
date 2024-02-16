@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include "Bullet.h"
 
@@ -21,9 +20,7 @@ public:
   void Bullet_border_collision(sf::RenderWindow& window);
 
 private:
-  sf::RectangleShape m_shape;
-  const sf::Vector2f m_shape_size;
-  const sf::Color m_shape_color;
+  Rectangle_shape_base m_shape;
 
   float m_player_speed;
 

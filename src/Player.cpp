@@ -1,24 +1,21 @@
 #include <math.h>
 #include "include/Player.h"
 
-Player::Player() : 
-  m_shape_size(12.f, 12.f),
-  m_shape_color(sf::Color::White),
-  m_player_speed(4)
+Player::Player() 
+  : m_shape(sf::Vector2f(12.f, 12.f), sf::Color::White)
+  , m_player_speed(4.f)
 {
-  m_shape.setSize(m_shape_size);
-  m_shape.setFillColor(m_shape_color);
-  m_shape.setOrigin(m_shape_size / 2.f);
+  m_shape.shape.setOrigin(m_shape.m_size / 2.f);
 }
 
 void Player::Draw_player(sf::RenderWindow& window)
 {
-  window.draw(m_shape);
+  window.draw(m_shape.shape);
 }
 
 sf::Vector2f Player::Get_shape_center()
 {
-  return sf::Vector2f(m_shape.getPosition().x, m_shape.getPosition().y);
+  return sf::Vector2f(m_shape.shape.getPosition().x, m_shape.shape.getPosition().y);
 }
 
 sf::Vector2f Player::Get_aim_direction(sf::Vector2f mouse_position_window)
@@ -45,22 +42,22 @@ float Player::Get_aim_angle(sf::Vector2f mouse_position_window)
 
 void Player::Set_shape_rotation(sf::Vector2f mouse_position_window)
 {
-  m_shape.setRotation(Get_aim_angle(mouse_position_window));
+  m_shape.shape.setRotation(Get_aim_angle(mouse_position_window));
 }
 
 void Player::Player_movement()
 {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    m_shape.move(-m_player_speed, 0.f);
+    m_shape.shape.move(-m_player_speed, 0.f);
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    m_shape.move(m_player_speed, 0.f);
+    m_shape.shape.move(m_player_speed, 0.f);
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    m_shape.move(0.f, -m_player_speed);
+    m_shape.shape.move(0.f, -m_player_speed);
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    m_shape.move(0.f, m_player_speed);
+    m_shape.shape.move(0.f, m_player_speed);
 }
 
 void Player::Draw_bullets(sf::RenderWindow& window)

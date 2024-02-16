@@ -1,8 +1,6 @@
-# TODO
+## Zombies to be added
 
-## - Zombies to be added
-
-## - Map
+## Map
 - Entities like boarded windows (like CoD: Zombies)
 
-## - Weapons and bullet damage
+## Weapons and bullet damage
