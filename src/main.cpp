@@ -6,7 +6,7 @@ int main()
     Game game;
 
     // Llama a la funcion que ejecuta el juego
-    game.run();
+    game.Run();
 
     return 0;
 }

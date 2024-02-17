@@ -1,7 +1,7 @@
 #include "include/Bullet.h"
 
 Bullet::Bullet() 
-  : m_shape(sf::Vector2f(2.f, 80.f), sf::Color(252, 164, 2, 192))
+  : m_shape(sf::Vector2f(2.f, 80.f), sf::Color(252, 185, 60, 192))
   , m_current_velocity(0.f, 0.f)
   , m_max_speed(80.f)
 {
