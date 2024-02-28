@@ -1,13 +1,14 @@
-#include "include/Game.h"
 //#include <iostream>
+
+#include "include/Game.h"
 
 Game::Game() 
   : m_window(sf::VideoMode(1366, 768), "Game", 
-                        //sf::Style::Fullscreen)
-                        // Para mirar la consola y el juego al mismo tiempo
-                        sf::Style::Default)
+             sf::Style::Fullscreen)
+             // Para mirar la consola y el juego al mismo tiempo
+             //sf::Style::Default)
   , m_menu(m_window)
-  , m_game()
+  , m_game(m_window)
 {
   m_window.setFramerateLimit(60);
 

@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #define NUMBER_ITEMS 2
 
@@ -19,4 +20,7 @@ private:
   sf::Font m_font;
   sf::Text m_text[NUMBER_ITEMS];
   sf::Text m_outline;
+
+  //sf::SoundBuffer m_enter_buffer;
+  //sf::Sound m_enter_sound;
 };
