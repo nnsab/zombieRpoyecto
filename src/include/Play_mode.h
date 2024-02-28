@@ -15,7 +15,7 @@ public:
 private:
 
   void Player_movement();
-  bool Check_wall_collision(sf::Vector2f direction);
+  void Check_wall_collision();
   void Difficulty();
   void Spawn_zombies();
   void Bullet_collisions();

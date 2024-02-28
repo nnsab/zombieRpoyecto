@@ -6,7 +6,7 @@ void Entity::Draw_shape(sf::RenderWindow& window)
   window.draw(m_shape.shape);
 }
 
-sf::Sprite& Entity::Get_shape()
+sf::Sprite Entity::Get_shape()
 {
   return m_shape.shape;
 }
@@ -44,6 +44,11 @@ float Entity::Get_aim_angle(sf::Vector2f target_position)
   return angle;
 }
 
+float Entity::Get_speed()
+{
+  return m_speed;
+}
+
 void Entity::Set_shape_position(sf::Vector2f position)
 {
   m_shape.shape.setPosition(position);
@@ -54,3 +59,7 @@ void Entity::Set_shape_rotation(float angle)
   m_shape.shape.setRotation(angle);
 }
 
+void Entity::Move_shape(sf::Vector2f direction)
+{
+  m_shape.shape.move(direction);
+}

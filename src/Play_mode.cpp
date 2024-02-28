@@ -1,5 +1,5 @@
 #include <time.h>
-//#include <iostream>
+#include <iostream>
 #include "include/Play_mode.h"
 
 #define SPAWN_DELAY 60
@@ -22,6 +22,7 @@ void Play_mode::Processes(sf::RenderWindow& window)
 {
   //std::cout << m_spawned_zombies << " " << m_spawn_counter << " " << m_wave_zombies << "\n";
   Player_movement();
+  Check_wall_collision();
   m_player.Set_shape_rotation(m_player.Get_aim_angle(sf::Vector2f(sf::Mouse::getPosition())));
   m_player.Shooting(sf::Vector2f(sf::Mouse::getPosition()));
   Spawn_zombies();
@@ -35,32 +36,39 @@ void Play_mode::Processes(sf::RenderWindow& window)
 
 void Play_mode::Player_movement()
 {
-  float current_speed = m_player.Get_speed();
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    m_player.Get_shape().move(-current_speed, 0.f);
+    m_player.Move_shape(sf::Vector2f(-m_player.Get_speed(), 0.f));
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    m_player.Get_shape().move(current_speed, 0.f);
+    m_player.Move_shape(sf::Vector2f(m_player.Get_speed(), 0.f));
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    m_player.Get_shape().move(0.f, -current_speed);
+    m_player.Move_shape(sf::Vector2f(0.f, -m_player.Get_speed()));
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    m_player.Get_shape().move(0.f, current_speed);
+    m_player.Move_shape(sf::Vector2f(0.f, m_player.Get_speed()));
 }
 
-/*
-bool Play_mode::Check_wall_collision(sf::Vector2f direction)
+void Play_mode::Check_wall_collision()
 {
-  m_player.collision_box.setPosition(m_player.Get_shape_center() + direction);
   for (size_t i = 0; i < NUMBER_WALLS; i++)
   {
-    if(m_player.collision_box.getGlobalBounds().intersects(m_map.wall[i].shape.getGlobalBounds()))
-      return true;
+    if(m_player.Get_shape().getGlobalBounds().intersects(m_map.wall[i].shape.getGlobalBounds()))
+    {
+      std::cout << "Collision" << "\n";
+      if(m_map.wall[i].shape.getSize().x > m_map.wall[i].shape.getSize().y)
+      {
+        m_player.Move_shape(-(sf::Vector2f(0.f, m_map.wall[i].shape.getPosition().y - m_player.Get_shape_center().y)));
+      }
+      
+      else
+      {
+        m_player.Move_shape(-(sf::Vector2f(m_map.wall[i].shape.getPosition().x - m_player.Get_shape_center().x, 0.f)));
+      }
+      break;
+    }
   }
-  return false;
 }
-*/
 
 void Play_mode::Difficulty()
 {

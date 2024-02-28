@@ -10,12 +10,6 @@ Player::Player(sf::RenderWindow& window) : weapon(2, 20)
   m_speed = 2.5;
   m_shape.shape.setPosition(sf::Vector2f(window.getSize()) / 2.f);
 
-  collision_box.setOrigin(collision_box.getSize().x / 2.f, collision_box.getSize().y / 2.f);
-}
-
-float Player::Get_speed()
-{
-  return m_speed;
 }
 
 void Player::Shooting(sf::Vector2f mouse_position_window)

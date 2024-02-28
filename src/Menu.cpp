@@ -49,21 +49,21 @@ void Menu::Processes(sf::RenderWindow& window, int& game_state)
 
 void Menu::Selector()
 {
-  m_outline = m_text[m_index];
-  m_outline.setFillColor(sf::Color::Red);
-  m_outline.move(sf::Vector2f(m_outline.getPosition().x + 4.f, m_outline.getPosition().y + 4.f));
-
   if(m_index == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     m_index++;
 
   else if(m_index == 1 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     m_index--;
 
+  m_outline = m_text[m_index];
+  m_outline.setFillColor(sf::Color::Red);
+  m_outline.setPosition(sf::Vector2f(m_outline.getPosition().x + 4.f, m_outline.getPosition().y + 4.f));
+
 }
 
 void Menu::Render(sf::RenderWindow& window)
 {
-//  window.clear(sf::Color(0, 0, 0, 255));
+  window.clear(sf::Color(0, 0, 0, 255));
 
   window.draw(m_outline);
   for(int i = 0; i < NUMBER_ITEMS; i++)

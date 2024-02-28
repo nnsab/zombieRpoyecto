@@ -11,8 +11,6 @@ class Player : public Entity
 public:
   Player(sf::RenderWindow& window);
 
-  float Get_speed();
-
   void Shooting(sf::Vector2f mouse_position_window);
 
   void Draw_bullets(sf::RenderWindow& window);
@@ -20,8 +18,6 @@ public:
 public:
   Bullet bullets[MAX_BULLETS];
   Weapon weapon;
-
-  sf::RectangleShape collision_box;
 
 private:
   int m_bullet_number;
