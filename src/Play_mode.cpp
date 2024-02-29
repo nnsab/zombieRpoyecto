@@ -9,13 +9,28 @@ Play_mode::Play_mode(sf::RenderWindow& window)
   , m_player(window)
   , m_zombie_iteration(0)
   , m_spawned_zombies(0)
-  , m_wave(0)
+  , m_wave(1)
   , m_wave_zombies(20)
   , m_spawn_counter(0)
   , m_spawn_timer(60)
+  , m_points(0)
+  , m_killed_zombies_statistic(0)
 {
   srand(time(NULL));
 
+  if(!m_font.loadFromFile("./Resources/Fonts/CloisterBlackLight-axjg.ttf"))
+  {
+  }
+
+  m_display_wave.setFont(m_font);
+  m_display_wave.setCharacterSize(30);
+  m_display_wave.setFillColor(sf::Color::Red);
+  m_display_wave.setPosition(10, 0);
+
+  m_display_points.setFont(m_font);
+  m_display_points.setCharacterSize(30);
+  m_display_points.setFillColor(sf::Color::Red);
+  m_display_points.setPosition(1170.f, 720);
 }
 
 void Play_mode::Processes(sf::RenderWindow& window)
@@ -30,6 +45,9 @@ void Play_mode::Processes(sf::RenderWindow& window)
   //  m_zombies[i].Set_shape_rotation(m_zombies[i].Get_aim_angle(m_player.Get_shape_center()));
   Difficulty();
   Bullet_collisions();
+
+  m_display_wave.setString("Ronda: " + std::to_string(m_wave));
+  m_display_points.setString("Puntos: " + std::to_string(m_points));
 
   Render(window);
 }
@@ -155,6 +173,9 @@ void Play_mode::Render(sf::RenderWindow& window)
     m_zombies[i].Draw_shape(window);
 
   m_player.Draw_shape(window);
+
+  window.draw(m_display_wave);
+  window.draw(m_display_points);
 
   window.display();
 }

@@ -49,4 +49,8 @@ private:
     sf::Vector2f(900.f, 20.f),
     sf::Vector2f(1100.f, 20.f)
   };
+
+  sf::Font m_font;
+  sf::Text m_display_points;
+  sf::Text m_display_wave;
 };

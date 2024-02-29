@@ -4,12 +4,10 @@ Menu::Menu(sf::RenderWindow& window) : m_index(0)
 {
   if(!m_font.loadFromFile("./Resources/Fonts/CloisterBlackLight-axjg.ttf"))
   {
-
   }
 
   //if(!m_enter_buffer.loadFromFile("./Resources/Sounds/funny_sound.mp4"))
   {
-
   }
 
   //m_enter_sound.setBuffer(m_enter_buffer);
