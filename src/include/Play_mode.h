@@ -15,7 +15,7 @@ public:
 private:
 
   void Player_movement();
-  void Check_wall_collision();
+  void Check_obstacle_collision();
   void Difficulty();
   void Spawn_zombies();
   void Bullet_collisions();

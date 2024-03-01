@@ -12,7 +12,7 @@ private:
   void Process_events();
 
 public:
-  int m_game_state;
+  int game_state;
   
 private:
   sf::RenderWindow m_window; // ventana del juego
