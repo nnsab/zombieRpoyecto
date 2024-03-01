@@ -1,5 +1,3 @@
-#include <vector>
-
 #include "Entity.h"
 #include "Bullet.h"
 #include "Weapon.h"

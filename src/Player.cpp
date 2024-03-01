@@ -14,7 +14,6 @@ Player::Player(sf::RenderWindow& window) : weapon(2, 20)
 
 void Player::Shooting(sf::Vector2f mouse_position_window)
 {
-  //std::cout << m_firerate_timer << "\n";
   if(m_firerate_timer >= weapon.Get_firerate_delay())
   {
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left))

@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "Zombie.h"
 
-#define SPAWN_LOCATION_NUMBER 5
+#define SPAWN_LOCATION_NUMBER 15
 #define MAX_ZOMBIES 200
 
 class Play_mode
@@ -16,8 +16,9 @@ private:
 
   void Player_movement();
   void Check_obstacle_collision();
-  void Difficulty();
   void Spawn_zombies();
+  void Difficulty();
+  void Zombies_behavior(sf::RenderWindow& window);
   void Bullet_collisions();
 
   void Render(sf::RenderWindow& window);
@@ -43,11 +44,21 @@ private:
 
   const sf::Vector2f m_spawn_location[SPAWN_LOCATION_NUMBER]
   {
-    sf::Vector2f(180.f, 20.f),
+    sf::Vector2f(305.f, 20.f),
     sf::Vector2f(410.f, 20.f),
     sf::Vector2f(510.f, 20.f),
-    sf::Vector2f(900.f, 20.f),
-    sf::Vector2f(1100.f, 20.f)
+    sf::Vector2f(890.f, 20.f),
+    sf::Vector2f(1090.f, 20.f),
+    sf::Vector2f(1346.f, 180.f),
+    sf::Vector2f(1346.f, 350.f),
+    sf::Vector2f(1346.f, 460.f),
+    sf::Vector2f(1346.f, 587.f),
+    sf::Vector2f(253.f, 748.f),
+    sf::Vector2f(297.f, 748.f),
+    sf::Vector2f(442.f, 748.f),
+    sf::Vector2f(814.f, 748.f),
+    sf::Vector2f(961.f, 748.f),
+    sf::Vector2f(1070.f, 748.f)
   };
 
   sf::Font m_font;

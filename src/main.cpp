@@ -1,3 +1,4 @@
+// Se incluye el archivo que contiene el código del juego
 #include "include/Game.h"
 
 int main()

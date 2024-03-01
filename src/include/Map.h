@@ -1,8 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Sprite_base.h"
 
-#define NUMBER_WALLS 27
-#define NUMBER_WINDOWS 24
+#define NUMBER_WALLS 48
+#define NUMBER_WINDOWS 44
 
 class Wall
 {
@@ -12,7 +12,7 @@ public:
 public:
   //Sprite_base sprite;
   sf::RectangleShape shape;
-  sf::Color color = sf::Color::Yellow;
+  sf::Color color = sf::Color(127, 255, 0, 255);
 };
 
 class Window
@@ -23,7 +23,7 @@ public:
 public:
   //Sprite_base sprite;
   sf::RectangleShape shape;
-  sf::Color color = sf::Color::Cyan;
+  sf::Color color = sf::Color(130, 181, 181, 255);
 };
 
 class Map

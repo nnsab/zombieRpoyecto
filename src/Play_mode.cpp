@@ -2,7 +2,7 @@
 //#include <iostream>
 #include "include/Play_mode.h"
 
-#define SPAWN_DELAY 60
+#define SPAWN_DELAY 65
 
 Play_mode::Play_mode(sf::RenderWindow& window)
   : m_map(window)
@@ -42,9 +42,8 @@ void Play_mode::Processes(sf::RenderWindow& window)
   m_player.Set_shape_rotation(m_player.Get_aim_angle(sf::Vector2f(sf::Mouse::getPosition())));
   m_player.Shooting(sf::Vector2f(sf::Mouse::getPosition()));
   Spawn_zombies();
-  //for(size_t i = 0; i < MAX_ZOMBIES; i++)
-  //  m_zombies[i].Set_shape_rotation(m_zombies[i].Get_aim_angle(m_player.Get_shape_center()));
   Difficulty();
+  Zombies_behavior(window);
   Bullet_collisions();
 
   // Actualización de interfaz de usuario
@@ -120,23 +119,6 @@ void Play_mode::Check_obstacle_collision()
   }
 }
 
-void Play_mode::Difficulty()
-{
-  // Si todos los zombies en pantalla mueren y todos los zombies de la ronda ya se generaron
-  if(m_spawned_zombies <= 0 && m_spawn_counter == m_wave_zombies)
-  {
-    // Se aumenta la vida de los zombies un 10%
-    m_zombie.Set_health(m_zombie.Get_health() * 1.1);
-    // Se aumenta la cantidad de zombies por ronda un 10%
-    m_wave_zombies = m_wave_zombies * 1.1;
-    // Aumenta el número de ronda
-    m_wave++;
-
-    // Se reinicia el contador de zombies generados por ronda
-    m_spawn_counter = 0;
-  }
-}
-
 void Play_mode::Spawn_zombies()
 {
   // El temporizador aumenta su valor cada fotograma
@@ -167,13 +149,43 @@ void Play_mode::Spawn_zombies()
   m_spawn_timer++;
 }
 
+void Play_mode::Difficulty()
+{
+  // Si todos los zombies en pantalla mueren y todos los zombies de la ronda ya se generaron
+  if(m_spawned_zombies <= 0 && m_spawn_counter == m_wave_zombies)
+  {
+    // Se aumenta la vida de los zombies un 10%
+    m_zombie.Set_health(m_zombie.Get_health() * 1.1);
+    // Se aumenta la cantidad de zombies por ronda un 10%
+    m_wave_zombies = m_wave_zombies * 1.1;
+    // Aumenta el número de ronda
+    m_wave++;
+
+    // Se reinicia el contador de zombies generados por ronda
+    m_spawn_counter = 0;
+  }
+}
+
+void Play_mode::Zombies_behavior(sf::RenderWindow& window)
+{
+  for(size_t i = 0; i < MAX_ZOMBIES; i++)
+  {
+    // Solo funciona si los zombies están dentro de la pantalla
+    if(m_zombies[i].Get_shape().getPosition().x > sf::Vector2f(0.f, 0.f).x)
+    {
+      m_zombies[i].Set_shape_rotation(m_zombies[i].Get_aim_angle(m_player.Get_shape_center()));
+      m_zombies[i].Move_shape(m_zombies[i].Get_normalized_aim_direction(m_player.Get_shape_center()) * m_zombies[i].Get_speed());
+    }
+  }
+}
+
 void Play_mode::Bullet_collisions()
 {
   for(size_t i = 0; i < MAX_BULLETS; i++)
   {
     for(size_t j = 0; j < MAX_ZOMBIES; j++)
     {
-      // Si el rectángulo de bullets[i] intercepta el rectángulo de m_map.wall[k]
+      // Si el rectángulo de bullets[i] intercepta el rectángulo de m_zombies[j]
       if(m_player.bullets[i].Get_shape().getGlobalBounds().intersects(m_zombies[j].Get_shape().getGlobalBounds()))
       {
         // Se pone el rectángulo de la bala fuera de la pantalla
@@ -200,14 +212,13 @@ void Play_mode::Bullet_collisions()
           m_points += 50;
           m_killed_zombies_statistic++;
         }
-        break;
       }
     }
 
-    for(size_t k = 0; k < NUMBER_WALLS; k++)
+    for(size_t j = 0; j < NUMBER_WALLS; j++)
     {
-      // Si el rectángulo de bullets[i] intercepta el rectángulo de m_map.wall[k]
-      if(m_player.bullets[i].Get_shape().getGlobalBounds().intersects(m_map.wall[k].shape.getGlobalBounds()))
+      // Si el rectángulo de bullets[i] intercepta el rectángulo de m_map.wall[j]
+      if(m_player.bullets[i].Get_shape().getGlobalBounds().intersects(m_map.wall[j].shape.getGlobalBounds()))
       {
         // Se pone el rectángulo de la bala fuera de la pantalla
         m_player.bullets[i].Set_shape_position(sf::Vector2f(-100, -100));
@@ -222,7 +233,7 @@ void Play_mode::Bullet_collisions()
 void Play_mode::Render(sf::RenderWindow& window)
 {
   // Limpia la pantalla
-  window.clear();
+  window.clear(sf::Color(40, 40, 39, 255));
 
   // Dibuja
   m_map.Draw_map(window);
