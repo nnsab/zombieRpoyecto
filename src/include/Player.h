@@ -18,7 +18,7 @@ public:
   Weapon weapon;
 
 private:
-  int m_bullet_number;
+  int m_bullet_iterator;
   int m_firerate_timer;
 
 };

@@ -19,9 +19,11 @@ private:
   void Spawn_zombies();
   void Difficulty();
   void Zombies_behavior(sf::RenderWindow& window);
+  void Zombie_attack();
   void Bullet_collisions();
 
   void Render(sf::RenderWindow& window);
+  void Quit(sf::RenderWindow& window);
 
 private:
   Map m_map;
@@ -64,4 +66,7 @@ private:
   sf::Font m_font;
   sf::Text m_display_points;
   sf::Text m_display_wave;
+  sf::Text m_death_screen;
+  sf::Text m_display_killed_zombies;
+  sf::Text m_display_quit;
 };

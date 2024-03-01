@@ -9,6 +9,9 @@ public:
 
   void Set_health(float health);
 
+public:
+  int attack_timer;
+
 private:
   float m_health;
 

@@ -18,19 +18,19 @@ void Player::Shooting(sf::Vector2f mouse_position_window)
   {
     if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {
-      if(m_bullet_number < MAX_BULLETS)
+      if(m_bullet_iterator < MAX_BULLETS)
       {
-        m_bullet_number++;
+        m_bullet_iterator++;
       }
 
       else
       {
-        m_bullet_number = 0;
+        m_bullet_iterator = 0;
       }
 
-      bullets[m_bullet_number].Set_shape_position(Get_shape_center());
-      bullets[m_bullet_number].Set_shape_rotation(Get_aim_angle(mouse_position_window));
-      bullets[m_bullet_number].Set_current_velocity(Get_normalized_aim_direction(mouse_position_window));
+      bullets[m_bullet_iterator].Set_shape_position(Get_shape_center());
+      bullets[m_bullet_iterator].Set_shape_rotation(Get_aim_angle(mouse_position_window));
+      bullets[m_bullet_iterator].Set_current_velocity(Get_normalized_aim_direction(mouse_position_window));
 
       m_firerate_timer = 0;
     }

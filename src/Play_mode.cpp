@@ -1,8 +1,8 @@
 #include <time.h>
-//#include <iostream>
 #include "include/Play_mode.h"
 
 #define SPAWN_DELAY 65
+#define ZOMBIE_ATTACK_DELAY 20
 
 Play_mode::Play_mode(sf::RenderWindow& window)
   : m_map(window)
@@ -33,26 +33,63 @@ Play_mode::Play_mode(sf::RenderWindow& window)
   m_display_points.setCharacterSize(30);
   m_display_points.setFillColor(sf::Color::Red);
   m_display_points.setPosition(1170.f, 720);
+
+  m_death_screen.setFont(m_font);
+  m_death_screen.setCharacterSize(80);
+  m_death_screen.setFillColor(sf::Color::Red);
+  m_death_screen.setPosition(460, 200);
+  m_death_screen.setString("MORISTE");
+
+  m_display_killed_zombies.setFont(m_font);
+  m_display_killed_zombies.setCharacterSize(40);
+  m_display_killed_zombies.setFillColor(sf::Color::Red);
+  m_display_killed_zombies.setPosition(500, 400);
+
+  m_display_quit.setFont(m_font);
+  m_display_quit.setCharacterSize(20);
+  m_display_quit.setFillColor(sf::Color::Red);
+  m_display_quit.setPosition(550, 600);
+  m_display_quit.setString("Presiona escape para salir");
 }
 
 void Play_mode::Processes(sf::RenderWindow& window)
 {
-  Player_movement();
-  Check_obstacle_collision();
-  m_player.Set_shape_rotation(m_player.Get_aim_angle(sf::Vector2f(sf::Mouse::getPosition())));
-  m_player.Shooting(sf::Vector2f(sf::Mouse::getPosition()));
-  Spawn_zombies();
-  Difficulty();
-  Zombies_behavior(window);
-  Bullet_collisions();
+  // Si el jugador está dentro de la pantalla (o sea vivo)
+  if(m_player.Get_shape_center().x > 0.f)
+  {
+    Player_movement();
+    Check_obstacle_collision();
+    m_player.Set_shape_rotation(m_player.Get_aim_angle(sf::Vector2f(sf::Mouse::getPosition())));
+    m_player.Shooting(sf::Vector2f(sf::Mouse::getPosition()));
+    Spawn_zombies();
+    Difficulty();
+    Zombies_behavior(window);
+    Zombie_attack();
+    Bullet_collisions();
 
-  // Actualización de interfaz de usuario
-  // Número de ronda
-  m_display_wave.setString("Ronda: " + std::to_string(m_wave));
-  // Puntos del jugador
-  m_display_points.setString("Puntos: " + std::to_string(m_points));
+    // Actualización de interfaz de usuario
+    // Número de ronda
+    m_display_wave.setString("Ronda: " + std::to_string(m_wave));
+    // Puntos del jugador
+    m_display_points.setString("Puntos: " + std::to_string(m_points));
+    // Número de zombies asesinados (para mostrar en pantalla de muerte)
+    m_display_killed_zombies.setString("Mataste a " + std::to_string(m_killed_zombies_statistic) + " zombies");
 
-  Render(window);
+    Render(window);
+  }
+
+  else
+  {
+    Render(window);
+
+    window.draw(m_death_screen);
+    window.draw(m_display_killed_zombies);
+    window.draw(m_display_quit);
+
+    window.display();
+
+    Quit(window);
+  }
 }
 
 void Play_mode::Player_movement()
@@ -171,10 +208,36 @@ void Play_mode::Zombies_behavior(sf::RenderWindow& window)
   for(size_t i = 0; i < MAX_ZOMBIES; i++)
   {
     // Solo funciona si los zombies están dentro de la pantalla
-    if(m_zombies[i].Get_shape().getPosition().x > sf::Vector2f(0.f, 0.f).x)
+    if(m_zombies[i].Get_shape().getPosition().x > 0.f)
     {
+      // Rota a el zombie para que mire hacia el jugador
       m_zombies[i].Set_shape_rotation(m_zombies[i].Get_aim_angle(m_player.Get_shape_center()));
+      // Mueve a los zombies hacia el jugador a la velocidad de la dirección vectorial a la que está el jugador multiplicada por la rapidez del zombie
       m_zombies[i].Move_shape(m_zombies[i].Get_normalized_aim_direction(m_player.Get_shape_center()) * m_zombies[i].Get_speed());
+    }
+  }
+}
+
+void Play_mode::Zombie_attack()
+{
+  // Itera sobre todos los zombies para chequearlos
+  for(size_t i = 0; i < MAX_ZOMBIES; i++)
+  {
+    // Si m_zombies[i] collisiona con m_player
+    if(m_zombies[i].Get_shape().getGlobalBounds().intersects(m_player.Get_shape().getGlobalBounds()))
+    {
+      // Si el temporizador es llega al mínimo para atacar
+      if(m_zombies[i].attack_timer >= ZOMBIE_ATTACK_DELAY)
+      {
+        // Restarle vida al jugador
+        m_player.Set_shape_position(sf::Vector2f(-200.f, 0.f));
+      }
+
+      else
+      {
+        // Incrementa el temporizador
+        m_zombies[i].attack_timer++;
+      }
     }
   }
 }
@@ -250,4 +313,12 @@ void Play_mode::Render(sf::RenderWindow& window)
 
   // Actualiza la pantalla
   window.display();
+}
+
+void Play_mode::Quit(sf::RenderWindow& window)
+{
+  if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+  {
+    window.close();
+  }
 }
